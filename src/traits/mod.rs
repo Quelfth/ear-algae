@@ -1,4 +1,4 @@
-use std::cmp::Ordering;
+use std::{cmp::Ordering, fmt::Debug};
 
 mod impls;
 pub mod ops;
@@ -6,7 +6,7 @@ pub mod convert;
 pub mod from;
 pub mod restricted;
 
-pub trait Ring: Copy+Sized+PartialEq+PartialOrd {
+pub trait Ring: Copy+Sized+PartialEq+PartialOrd+Debug {
     const ZERO: Self;
     const ONE: Self;
     const TWO: Self;
