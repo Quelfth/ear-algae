@@ -11,6 +11,16 @@ use crate::{smath, vect};
 #[derive(Copy, Clone, Debug)]
 pub struct Rot2<S: Field> (S, Vect<1, S>);
 
+impl<S: Field> Rot2<S> {
+    fn renormalize(self) -> Self {
+        if let Some(normal) = vect!(self.0, self.1[0]).normal() {
+            Self(normal[0], vect!(normal[1]))
+        } else {
+            Self::IDENT
+        }
+    }
+}
+
 impl<S: Field> FromAngleAxis<S, Nrml<1, S>> for Rot2<S> {
     fn angle_axis(angle: S, axis: Nrml<1, S>) -> Self {
         let (sin, cos) = smath!{ (angle/2).sin_cos };
@@ -131,7 +141,7 @@ impl<S: Field> BefAft for Rot2<S> {
         Self (
             self.0.mul(other.0).sub(self.1.dot(other.1)),
             other.1 * self.0 + self.1 * other.0
-        )
+        ).renormalize()
     }
 }
 

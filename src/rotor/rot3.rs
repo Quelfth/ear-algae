@@ -123,11 +123,11 @@ impl<S: Field> Apl<Vect<3, S>> for Rot3<S> {
 
 impl<S: Field> Apl<Nrml<3, S>> for Rot3<S> {
     type Output = Nrml<3, S>;
-    fn apl(self, vect: Nrml<3, S>) -> Nrml<3, S> {
-        if let Some(normal) = self.apl(vect.relax()).normal() {
+    fn apl(self, normal: Nrml<3, S>) -> Nrml<3, S> {
+        if let Some(normal) = self.apl(normal.relax()).normal() {
             normal
         } else {
-            panic!("{:?}", self)
+            panic!("{:?} ~~~ {:?}", self, normal)
         }
         
     }
