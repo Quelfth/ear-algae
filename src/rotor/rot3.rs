@@ -10,6 +10,16 @@ use super::ops::*;
 #[derive(Copy, Clone)]
 pub struct Rot3<S: Field> (S, Vect<3, S>);
 
+impl<S: Field> Rot3<S> {
+    fn renormalize(self) -> Self {
+        if let Some(normal) = vect!(self.0, self.1[0], self.1[1], self.1[2]).normal() {
+            Self(normal[0], vect!(normal[1], normal[2], normal[3]))
+        } else {
+            Self::IDENT
+        }
+    }
+}
+
 impl<S: Field> FromAngleAxis<S, Nrml<3, S>> for Rot3<S> {
     fn angle_axis(angle: S, axis: Nrml<3, S>) -> Self {
         let (sin, cos) = smath!{ (angle/2).sin_cos };
@@ -132,7 +142,7 @@ impl<S: Field> BefAft for Rot3<S> {
         Self (
             self.0.mul(other.0).sub(self.1.dot(other.1)),
             self.1.cross(other.1) + other.1 * self.0 + self.1 * other.0
-        )
+        ).renormalize()
     }
 }
 
