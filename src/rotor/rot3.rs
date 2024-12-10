@@ -1,13 +1,18 @@
 use std::fmt::{self, Display};
 
 use restricted::Restricted;
+use serde::{Deserialize, Serialize};
 
 use crate::{smath, smath_mat, vect};
 
 use super::*;
 use super::ops::*;
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Serialize, Deserialize)]
+#[serde(
+    from = "Rot3AngRepr<S>", 
+    into = "Rot3AngRepr<S>",
+)]
 pub struct Rot3<S: Field> (S, Vect<3, S>);
 
 impl<S: Field> Rot3<S> {
@@ -124,12 +129,7 @@ impl<S: Field> Apl<Vect<3, S>> for Rot3<S> {
 impl<S: Field> Apl<Nrml<3, S>> for Rot3<S> {
     type Output = Nrml<3, S>;
     fn apl(self, normal: Nrml<3, S>) -> Nrml<3, S> {
-        if let Some(normal) = self.apl(normal.relax()).normal() {
-            normal
-        } else {
-            panic!("{:?} ~~~ {:?}", self, normal)
-        }
-        
+        self.apl(normal.relax()).normal().unwrap()
     }
 }
 
@@ -190,3 +190,18 @@ impl<S: Field+fmt::Debug> fmt::Debug for Rot3<S> {
     }
 }
 
+#[derive(Copy, Clone, Serialize, Deserialize)]
+pub struct Rot3AngRepr<S: Field>(<Rot3<S> as Rot<3, S>>::Bivector);
+
+
+impl<S: Field> From<Rot3<S>> for Rot3AngRepr<S> {
+    fn from(value: Rot3<S>) -> Self {
+        Rot3AngRepr(value.to_ang())
+    }
+}
+
+impl<S: Field> From<Rot3AngRepr<S>> for Rot3<S> {
+    fn from(value: Rot3AngRepr<S>) -> Self {
+        Self::from_ang(value.0)
+    }
+}

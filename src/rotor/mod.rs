@@ -47,6 +47,12 @@ impl<const N: usize, S: Field, R: Rot<N, S>> FromFromTo<Nrml<N, S>, Option<Nrml<
     }
 }
 
+
+pub struct RotBivectorRepr<R>(R);
+
+
+
+
 mod cross_product;
 
 

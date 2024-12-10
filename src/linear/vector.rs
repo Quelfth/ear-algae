@@ -1,19 +1,22 @@
 use std::{
-    array, 
-    fmt::{self, Display}, 
-    iter::Sum, 
-    ops::*
+    array, fmt::{self, Display}, iter::Sum, ops::*
 };
 
 
 use restricted::Restricted;
+use serde::{Deserialize, Serialize};
 
 
 use self::ops::*;
 
 use super::*;
 
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(bound(
+    serialize = "[S; N]:  Serialize",
+    deserialize = "[S; N]: Deserialize<'de>",
+))]
+#[serde(transparent)]
 pub struct Vect<const N: usize, S> (pub(crate) [S; N]);
 
 impl<S: Ring, const N: usize> Vect<N, S> {
@@ -423,3 +426,41 @@ impl<S: Ring+fmt::Debug, const N: usize> fmt::Debug for Vect<N, S> {
     }
 }
 
+// impl<S: Ring+Serialize, const N: usize> Serialize for Vect<N, S> {
+//     fn serialize<Ser: serde::Serializer>(&self, ser: Ser) -> Result<Ser::Ok, Ser::Error> {
+//         let mut vector = ser.serialize_tuple(N)?;
+//         for i in 0..N {
+//             vector.serialize_element(&self[i])?;
+//         }
+//         vector.end()
+//     }
+// }
+
+
+
+// impl<'de, S: Ring+Deserialize<'de>, const N: usize> Deserialize<'de> for Vect<N, S> {
+//     fn deserialize<De: serde::Deserializer<'de>>(de: De) -> Result<Self, De::Error> {
+        
+//         struct Visitor<const N: usize, S>(PhantomData<S>);
+
+//         impl<'de, S: Ring+Deserialize<'de>, const N: usize> serde::de::Visitor<'de> for Visitor<N, S> {
+//             type Value = Vect<N, S>;
+
+//             fn expecting(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+//                 write!(fmt, "a vector of length {N}")
+//             }
+
+//             fn visit_seq<A: SeqAccess<'de>>(self, mut seq: A) -> Result<Self::Value, A::Error> {
+//                 let mut value = Vect::ZERO;
+//                 for i in 0..N {
+//                     if let Some(e) = seq.next_element()? {
+//                         value[i] = e
+//                     }
+//                 }
+//                 Ok(value)
+//             }
+//         }
+
+//         de.deserialize_tuple(N, Visitor::<N, S>(PhantomData::<S>))
+//     }
+// }

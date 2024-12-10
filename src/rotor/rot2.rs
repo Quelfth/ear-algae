@@ -1,6 +1,7 @@
 use std::fmt::Display;
 
 use restricted::Restricted;
+use serde::Serialize;
 
 use self::ops::*;
 
@@ -8,7 +9,7 @@ use super::*;
 
 use crate::{smath, vect};
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, Serialize)]
 pub struct Rot2<S: Field> (S, Vect<1, S>);
 
 impl<S: Field> Rot2<S> {

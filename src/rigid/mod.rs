@@ -1,5 +1,7 @@
 use std::ops::*;
 
+use serde::Serialize;
+
 use crate::{linear::*, rotor::*, traits::*};
 
 use self::ops::{Apl, BefAft};
@@ -35,11 +37,11 @@ pub trait LinAng<const N: usize, S: Field>: Sized+Copy+Add<Output = Self>+Sub<Ou
     fn rig(self) -> Self::Rig;
 }
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, Serialize)]
 pub struct Rig2<S: Field> {rot: Rot2<S>, trans: Vect<2, S>}
 mod rig2;
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, Serialize)]
 pub struct Rig3<S: Field> {rot: Rot3<S>, trans: Vect<3, S>}
 mod rig3;
 
