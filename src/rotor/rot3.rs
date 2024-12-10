@@ -191,7 +191,8 @@ impl<S: Field+fmt::Debug> fmt::Debug for Rot3<S> {
 }
 
 #[derive(Copy, Clone, Serialize, Deserialize)]
-pub struct Rot3AngRepr<S: Field>(<Rot3<S> as Rot<3, S>>::Bivector);
+#[serde(transparent)]
+struct Rot3AngRepr<S: Field>(<Rot3<S> as Rot<3, S>>::Bivector);
 
 
 impl<S: Field> From<Rot3<S>> for Rot3AngRepr<S> {

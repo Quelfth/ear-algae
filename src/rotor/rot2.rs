@@ -1,7 +1,7 @@
 use std::fmt::Display;
 
 use restricted::Restricted;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use self::ops::*;
 
@@ -9,7 +9,11 @@ use super::*;
 
 use crate::{smath, vect};
 
-#[derive(Copy, Clone, Debug, Serialize)]
+#[derive(Copy, Clone, Debug, Serialize, Deserialize)]
+#[serde(
+    from = "Rot2AngRepr<S>", 
+    into = "Rot2AngRepr<S>",
+)]
 pub struct Rot2<S: Field> (S, Vect<1, S>);
 
 impl<S: Field> Rot2<S> {
@@ -150,5 +154,22 @@ impl<S: Field+Display> Display for Rot2<S> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(&format!("{}π rad", self.angle().div(S::PI).mul(self.axis().relax_or_zero()[0])))
 
+    }
+}
+
+#[derive(Copy, Clone, Serialize, Deserialize)]
+#[serde(transparent)]
+struct Rot2AngRepr<S: Field>(<Rot2<S> as Rot<2, S>>::Bivector);
+
+
+impl<S: Field> From<Rot2<S>> for Rot2AngRepr<S> {
+    fn from(value: Rot2<S>) -> Self {
+        Rot2AngRepr(value.to_ang())
+    }
+}
+
+impl<S: Field> From<Rot2AngRepr<S>> for Rot2<S> {
+    fn from(value: Rot2AngRepr<S>) -> Self {
+        Self::from_ang(value.0)
     }
 }
