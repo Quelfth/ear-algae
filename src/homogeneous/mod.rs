@@ -54,7 +54,6 @@ impl<S: Field> Mat<4, 4, S> {
     }
 
     pub fn perspective_projection(aspect: S, fov: S, n: S, f: S) -> Self {
-        
         let view = smath!{( (fov / 2).tan )};
     
         smath_mat![
@@ -62,6 +61,17 @@ impl<S: Field> Mat<4, 4, S> {
             0,                   (1/view),                     0,               0;
             0,                          0, ((((f+n)/(n-f))-1)/2), ((f*n) / (n-f));
             0,                          0,                  (-1),               0
+        ]
+    }
+    
+    pub fn perspective_projection_lh(aspect: S, fov: S, n: S, f: S) -> Self {
+        let view = smath!{( (fov / 2).tan )};
+    
+        smath_mat![
+            (1/(aspect * view)),        0,                     0,               0;
+            0,                   (1/view),                     0,               0;
+            0,                          0, ((((f+n)/(f-n))-1)/2), ((f*n) / (n-f));
+            0,                          0,                     1,               0
         ]
     }
 
