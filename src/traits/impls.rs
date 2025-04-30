@@ -89,6 +89,8 @@ macro_rules! float_impls {
             const HALF: Self = 0.5;
         
             const PI: Self = std::$l::consts::PI;
+            
+            const SQRT_2: Self = std::$l::consts::SQRT_2;
 
             const INFINITY: Self = Self::INFINITY;
 

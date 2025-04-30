@@ -75,8 +75,3 @@ macro_rules! smath {
         smath!{($($x)*)}
     }
 }
-
-
-
-
-

@@ -39,11 +39,28 @@ pub trait Ring: Copy+Sized+PartialEq+PartialOrd+Debug {
             self
         }
     }
+    
+    fn min(self, other: Self) -> Self {
+        if self.cmp(&other).is_le() {
+            self
+        } else {
+            other
+        }
+    }
+    
+    fn max(self, other: Self) -> Self {
+        if self.cmp(&other).is_ge() {
+            self
+        } else {
+            other
+        }
+    }
 }
 
 pub trait Field : Ring {
     const HALF: Self;
     const PI: Self;
+    const SQRT_2: Self;
     const INFINITY: Self;
 
     fn sqrt(self) -> Self;

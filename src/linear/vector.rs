@@ -31,6 +31,10 @@ impl<S: Ring, const N: usize> Vect<N, S> {
     pub fn swiz<const M: usize>(self, f: impl Fn([S; N]) -> [S; M]) -> Vect<M, S> {
         Vect(f(self.0))
     }
+    
+    pub fn map<T: Ring>(self, f: impl Fn(S) -> T) -> Vect<N, T> {
+        Vect(self.0.map(f))
+    }
 
     pub fn inflate<const M: usize>(self, i: usize) -> Vect<M, S> where S:Sized {
         const {assert!(M > N)}

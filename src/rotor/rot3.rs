@@ -56,12 +56,14 @@ impl<S: Field> FromFromTo<Nrml<3, S>, Nrml<3, S>> for Rot3<S> {
                 return Self(S::ZERO, Vect::axis(1, S::ONE));
             }
         }
-        Self(dot, cross).part(S::HALF)
+        
+        let sqrt = dot.add(S::ONE).max(S::ZERO).sqrt();
+        Self(
+            sqrt.div(S::SQRT_2),
+            cross / sqrt.mul(S::SQRT_2),
+        )
     }
 }
-
-
-
 
 
 impl<S: Field> Rot<3, S> for Rot3<S> { 
@@ -204,5 +206,21 @@ impl<S: Field> From<Rot3<S>> for Rot3AngRepr<S> {
 impl<S: Field> From<Rot3AngRepr<S>> for Rot3<S> {
     fn from(value: Rot3AngRepr<S>) -> Self {
         Self::from_ang(value.0)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn test_from_to() {
+        let v1: Nrml<3, f32> = vect!(-2.34, 5.8, -0.8).normal().unwrap();
+        let v2 = vect!(-8.2, 1.1, 4.).normal().unwrap();
+        
+        let q = Rot3::from_to(v1, v2);
+        if (v2 - q.apl(v1)).magn() > 0.0001 {
+            panic!("{v2} != {}", q.apl(v1));
+        }
     }
 }

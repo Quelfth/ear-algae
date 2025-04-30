@@ -54,7 +54,12 @@ impl<S: Field> FromFromTo<Nrml<2, S>, Nrml<2, S>> for Rot2<S> {
                 return Self(S::ZERO, Vect::axis(0, S::ONE));
             }
         }
-        Self(dot, cross).part(S::HALF)
+        
+        let sqrt = dot.add(S::ONE).max(S::ZERO).sqrt();
+        Self(
+            sqrt.div(S::SQRT_2),
+            cross / sqrt.mul(S::SQRT_2),
+        )
     }
 }
 
