@@ -179,6 +179,17 @@ impl<S: Field> Rot3<S> {
     }
 }
 
+impl<S: Field> Rot3<S> {
+    pub fn euler_angles(self) -> (S, S, S) {
+        let Rot3(w, Vect([x, y, z])) = self;
+        (
+            S::atan2(smath!{2 * ((w*y) + (z*x))}, smath!{1 - (2 * ((y ^ 2) + (x ^ 2)))}),
+            smath!{ (2 * ((w*x) - (y-z))).asin },
+            S::atan2(smath!{2 * ((w*z) + (x*y))}, smath!{1 - (2 * ((z ^ 2) + (x ^ 2)))}),
+        )
+    }
+}
+
 impl<S: Field+Display> Display for Rot3<S> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(&format!("{}π rad {}", self.angle().div(S::PI), self.axis().relax_or_zero()))
