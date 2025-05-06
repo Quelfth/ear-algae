@@ -184,7 +184,7 @@ impl<S: Field> Rot3<S> {
         let Rot3(w, Vect([x, y, z])) = self;
         (
             S::atan2(smath!{2 * ((w*y) + (z*x))}, smath!{1 - (2 * ((y ^ 2) + (x ^ 2)))}),
-            smath!{ (2 * ((w*x) - (y-z))).asin },
+            smath!{2 * ((w*x) - (y-z))}.clamp(S::ONE.neg(), S::ONE).asin(),
             S::atan2(smath!{2 * ((w*z) + (x*y))}, smath!{1 - (2 * ((z ^ 2) + (x ^ 2)))}),
         )
     }
