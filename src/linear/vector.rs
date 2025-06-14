@@ -91,7 +91,7 @@ impl<S: Ring, const N: usize> Vect<N, S> {
 #[macro_export]
 macro_rules! vect {
     ( $($x:expr),* ) => {
-        $crate::linear::Vect::new ([$(($x).into()),*])
+        $crate::linear::Vect::new ([$(($x)),*])
     };
 }
 
