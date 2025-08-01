@@ -1,6 +1,6 @@
 use std::{array, fmt::{Display, Formatter}, ops::*};
 
-use bytemuck::{AnyBitPattern, NoUninit, Pod, TransparentWrapper, Zeroable};
+use bytemuck::*;
 
 use crate::smath;
 
@@ -13,10 +13,8 @@ use super::*;
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Debug, TransparentWrapper)]
 pub struct Mat<const N: usize, const M: usize, S: Field> (pub(crate) [[S; M]; N]);
 
-unsafe impl<const N: usize, const M: usize, S: Field> AnyBitPattern for Mat<N, M, S> where [[S; M]; N]: AnyBitPattern {}
 unsafe impl<const N: usize, const M: usize, S: Field> Zeroable for Mat<N, M, S> where [[S; M]; N]: Zeroable {}
-
-unsafe impl<const N: usize, const M: usize, S: Field> NoUninit for Mat<N, M, S> where [[S; M]; N]: NoUninit {}
+unsafe impl<const N: usize, const M: usize, S: Field> Pod for Mat<N, M, S> where [[S; M]; N]: Pod {}
 
 impl<S: Field, const N: usize, const M: usize> Mat<N, M, S> {
     pub fn new(array: [[S; M]; N]) -> Self {
