@@ -1,11 +1,12 @@
 
 [package]
 name = "ear-algae"
-version = "0.3.0"
-edition = "2021"
+version = "0.4.0"
+edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+bytemuck = { version = "1.23.1", features = ["derive"] }
 lerpify = {git = "https://github.com/Quelfth/lerpify"}
 serde = {version = "1.0.215", features = ["derive"]}

@@ -1,5 +1,7 @@
 use std::{array, fmt::{Display, Formatter}, ops::*};
 
+use bytemuck::{AnyBitPattern, NoUninit, Pod, TransparentWrapper, Zeroable};
+
 use crate::smath;
 
 use self::ops::{Conv, Det, Dot};
@@ -7,9 +9,14 @@ use self::ops::{Conv, Det, Dot};
 use super::*;
 
 
-
-#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
+#[repr(transparent)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug, TransparentWrapper)]
 pub struct Mat<const N: usize, const M: usize, S: Field> (pub(crate) [[S; M]; N]);
+
+unsafe impl<const N: usize, const M: usize, S: Field> AnyBitPattern for Mat<N, M, S> where [[S; M]; N]: AnyBitPattern {}
+unsafe impl<const N: usize, const M: usize, S: Field> Zeroable for Mat<N, M, S> where [[S; M]; N]: Zeroable {}
+
+unsafe impl<const N: usize, const M: usize, S: Field> NoUninit for Mat<N, M, S> where [[S; M]; N]: NoUninit {}
 
 impl<S: Field, const N: usize, const M: usize> Mat<N, M, S> {
     pub fn new(array: [[S; M]; N]) -> Self {
@@ -249,7 +256,7 @@ impl<S: Field+Display, const N: usize, const M: usize> Display for Mat<N, M, S> 
 }
 
 impl<S: Field> Mat<4, 4, S> {
-    pub fn long_data(self) -> [S; 16] {
+    pub fn flatten(self) -> [S; 16] {
         array::from_fn(|i| self[i % 4][i / 4])
     }
 }
