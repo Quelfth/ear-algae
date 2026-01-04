@@ -183,6 +183,26 @@ where
     }
 }
 
+impl<S: Field> Rot<2, S> {
+    pub fn angle2(angle: S) -> Self {
+        Self::angle_axis(angle, Nrml::axis(0))
+    }
+
+    pub fn signed_angle(self) -> S {
+        self.angle()
+            .mul(self.bi().normal_or_zero()[0])
+            .add(S::PI)
+            .rem_euclid(S::PI.add(S::PI))
+            .sub(S::PI)
+    }
+
+    pub fn lift<const N: usize, R: RotInner<N, S>>(self, axis: R::Axis) -> R {
+        let w = self.w();
+        let bi = axis * self.bi()[0];
+        unsafe { R::from_w_bi_unchecked(w, bi) }
+    }
+}
+
 impl<S: Field> Rot<3, S> {
     #[culit]
     pub fn pitch(angle: S) -> Self {

@@ -24,26 +24,6 @@ impl<S: Field> RotInner2<S> {
     }
 }
 
-impl<S: Field> RotInner2<S> {
-    pub fn angle(angle: S) -> Self {
-        Self::angle_axis(angle, Nrml::axis(0))
-    }
-
-    pub fn signed_angle(self) -> S {
-        self.angle()
-            .mul(self.1.normal_or_zero()[0])
-            .add(S::PI)
-            .rem_euclid(S::PI.add(S::PI))
-            .sub(S::PI)
-    }
-
-    pub fn lift<const N: usize, R: RotInner<N, S>>(self, axis: R::Axis) -> R {
-        let w = self.0;
-        let bi = axis * self.1[0];
-        unsafe { R::from_w_bi_unchecked(w, bi) }
-    }
-}
-
 impl<S: Field> RotInner<2, S> for RotInner2<S> {
     type Bivector = Vect<1, S>;
     type Axis = Nrml<1, S>;
