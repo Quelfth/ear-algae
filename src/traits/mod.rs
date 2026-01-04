@@ -1,12 +1,7 @@
 use std::{cmp::Ordering, fmt::Debug};
-
 mod impls;
-pub mod ops;
-pub mod convert;
-pub mod from;
-pub mod restricted;
 
-pub trait Ring: Copy+Sized+PartialEq+PartialOrd+Debug {
+pub trait Ring: Copy + Sized + PartialEq + PartialOrd + Debug {
     const ZERO: Self;
     const ONE: Self;
     const TWO: Self;
@@ -31,15 +26,13 @@ pub trait Ring: Copy+Sized+PartialEq+PartialOrd+Debug {
     fn clamp(self, min: Self, max: Self) -> Self {
         if self.cmp(&min).is_lt() {
             min
-        }
-        else if self.cmp(&max).is_gt() {
+        } else if self.cmp(&max).is_gt() {
             max
-        }
-        else {
+        } else {
             self
         }
     }
-    
+
     fn min(self, other: Self) -> Self {
         if self.cmp(&other).is_le() {
             self
@@ -47,7 +40,7 @@ pub trait Ring: Copy+Sized+PartialEq+PartialOrd+Debug {
             other
         }
     }
-    
+
     fn max(self, other: Self) -> Self {
         if self.cmp(&other).is_ge() {
             self
@@ -57,7 +50,7 @@ pub trait Ring: Copy+Sized+PartialEq+PartialOrd+Debug {
     }
 }
 
-pub trait Field : Ring {
+pub trait Field: Ring {
     const HALF: Self;
     const PI: Self;
     const SQRT_2: Self;

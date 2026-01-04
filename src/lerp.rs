@@ -1,7 +1,6 @@
 use lerpify::LinearCombination;
 
-use crate::{prelude::*, traits::Ring};
-
+use crate::{Vect, traits::Ring};
 
 impl<const N: usize, S: Ring> LinearCombination<S> for Vect<N, S> {
     fn linear_combination<const L: usize>(terms: [(Self, S); L]) -> Self {

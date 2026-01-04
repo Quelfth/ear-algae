@@ -1,13 +1,4 @@
-
 pub use crate::{
-    linear::*,
-    rotor::*,
-    rigid::*,
-    traits::{
-        from::*,
-        ops::*,
-        restricted::*
-    }
+    Mat, Nrml, Rig, Rot, Vect,
+    ops::{Apl, BefAft, Cross, Dot, ProjRej},
 };
-
-pub use crate::vect;

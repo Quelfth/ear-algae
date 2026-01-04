@@ -23,18 +23,42 @@ dependencies = [
 ]
 
 [[package]]
+name = "culit"
+version = "0.6.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8a137dceb939f906dbbdc55bfc4c001083c87e611a7bab38cabc0b7e7668dcef"
+dependencies = [
+ "litrs",
+]
+
+[[package]]
 name = "ear-algae"
-version = "0.4.1"
+version = "0.5.0"
 dependencies = [
  "bytemuck",
+ "culit",
  "lerpify",
+ "maybe-trait",
  "serde",
 ]
 
 [[package]]
 name = "lerpify"
 version = "1.0.0"
-source = "git+https://github.com/Quelfth/lerpify#f799555b142d7fafb8602c17295a70d12f6a1bab"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e4a35f6d63c1ac6808799ad00724a2d19a71227356575cb8dcd09dedbd88abeb"
+
+[[package]]
+name = "litrs"
+version = "0.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1e4cf394bcd88ba72eb3b2862e21ef6458b0e1586654e213b0176e667bb9d19e"
+
+[[package]]
+name = "maybe-trait"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1816403e0ef5e0f0989b2a6e42f7884cc0e5c73041fce3245b9d4f9c115a4cd2"
 
 [[package]]
 name = "proc-macro2"

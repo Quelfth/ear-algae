@@ -1,12 +1,20 @@
-
 [package]
 name = "ear-algae"
-version = "0.4.1"
+version = "0.5.0"
 edition = "2024"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+license = "MIT OR Apache-2.0"
 
 [dependencies]
-bytemuck = { version = "1.23.1", features = ["derive"] }
-lerpify = {git = "https://github.com/Quelfth/lerpify"}
-serde = {version = "1.0.215", features = ["derive"]}
+culit = "0.6.1"
+maybe-trait = "1.0.0"
+
+bytemuck = { version = "1.23.1", features = ["derive"], optional = true }
+lerpify = { version = "1.0.0", optional = true }
+serde = { version = "1.0.215", features = ["derive"], optional = true }
+
+[features]
+bytemuck = ["dep:bytemuck"]
+lerpify = ["dep:lerpify"]
+serde = ["dep:serde"]
+
+full = ["bytemuck", "lerpify", "serde"]

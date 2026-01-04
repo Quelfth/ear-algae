@@ -1,14 +1,7 @@
-
-
-
-pub trait Conv<O> {
-    fn conv(self) -> O;
-}
-
 pub trait Dot<T> {
     type Output;
 
-    fn dot(self, other: T) -> Self::Output; 
+    fn dot(self, other: T) -> Self::Output;
 }
 
 pub trait Cross<T = Self> {
@@ -23,9 +16,11 @@ pub trait Apl<T> {
     fn apl(self, other: T) -> Self::Output;
 }
 
-pub trait BefAft: Sized+Copy {
+pub trait BefAft: Sized + Copy {
     fn aft(self, other: Self) -> Self;
-    fn bef(self, other: Self) -> Self {other.aft(self)}
+    fn bef(self, other: Self) -> Self {
+        other.aft(self)
+    }
 
     fn aft_assign(&mut self, other: Self) {
         *self = self.aft(other)
@@ -51,9 +46,6 @@ pub trait AngleTo<T = Self> {
     type Output;
     fn angle_to(self, other: T) -> Self::Output;
 }
-
-
-
 
 pub trait Det {
     type Output;
