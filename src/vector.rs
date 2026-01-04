@@ -1,5 +1,7 @@
 use std::{array, iter::Sum, ops::*};
 
+#[cfg(feature = "bytemuck")]
+use bytemuck::{Pod, Zeroable};
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
@@ -9,6 +11,7 @@ use crate::{
     traits::{Field, Ring},
 };
 
+#[repr(transparent)]
 #[derive(Copy, Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(
     feature = "serde",
@@ -22,6 +25,11 @@ use crate::{
     )
 )]
 pub struct Vect<const N: usize, S>(pub [S; N]);
+
+#[cfg(feature = "bytemuck")]
+unsafe impl<const N: usize, S: Copy> Zeroable for Vect<N, S> where [S; N]: Zeroable {}
+#[cfg(feature = "bytemuck")]
+unsafe impl<const N: usize, S: Copy> Pod for Vect<N, S> where [S; N]: Pod {}
 
 impl<const N: usize, S: Ring> Default for Vect<N, S> {
     fn default() -> Self {
