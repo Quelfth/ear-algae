@@ -3,6 +3,7 @@ name = "ear-algae"
 version = "0.5.0"
 edition = "2024"
 license = "MIT OR Apache-2.0"
+description = "Linear algebra featuring Vectors, Normal Vectors, Matrices, Rotors (Unit Quaternions) and Rigid Transforms (Rotation + Translation)"
 
 [dependencies]
 culit = "0.6.1"

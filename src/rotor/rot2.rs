@@ -15,7 +15,7 @@ impl RotDim<2> for () {
 pub struct RotInner2<S: Field>(S, Vect<1, S>);
 
 impl<S: Field> RotInner2<S> {
-    fn renormalize(self) -> Self {
+    fn reunitize(self) -> Self {
         if let Some(normal) = Vect([self.0, self.1[0]]).normal() {
             Self(normal[0], Vect([normal[1]]))
         } else {
@@ -127,7 +127,7 @@ impl<S: Field> RotInner<2, S> for RotInner2<S> {
             self.0.mul(other.0).sub(self.1.dot(other.1)),
             other.1 * self.0 + self.1 * other.0,
         )
-        .renormalize()
+        .reunitize()
     }
 
     #[culit]
